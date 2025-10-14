@@ -1,4 +1,4 @@
-/*
+
 // --- INITIAL DATA ---
 const defaultResources = {
   c: [
@@ -6,22 +6,8 @@ const defaultResources = {
     {name:"C Language Full Course (YouTube)", url:"https://youtu.be/KJgsSFOSQv0"},
     {name:"C Examples - Programiz", url:"https://www.programiz.com/c-programming/examples"}
   ],
-  web: [
-    {name:"HTML Basics - W3Schools", url:"https://www.w3schools.com/html/"},
-    {name:"CSS Tutorial - W3Schools", url:"https://www.w3schools.com/css/"},
-    {name:"JavaScript Guide - W3Schools", url:"https://www.w3schools.com/js/"},
-    {name:"FreeCodeCamp - Projects", url:"https://www.freecodecamp.org/"}
-  ],
-  maths: [
-    {name:"Khan Academy - Math", url:"https://www.khanacademy.org/math"},
-    {name:"Brilliant.org", url:"https://brilliant.org/"}
-  ],
-  physics: [
-    {name:"Physics Crash Course", url:"https://www.youtube.com/watch?v=tyZqKHDz7z0"},
-    {name:"The Physics Classroom", url:"https://www.physicsclassroom.com/"}
-  ]
 };
-*/
+
 // --- LOCAL STORAGE LOAD ---
 let resources = JSON.parse(localStorage.getItem('resources')) || defaultResources;
 

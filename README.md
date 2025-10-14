@@ -7,7 +7,7 @@ Built using **HTML, CSS, and JavaScript**, this app lets you **add, store, and m
 ---
 
 ## 🌍 Live Demo
-👉 *[Coming soon ...]*
+👉 *[(https://pixel-study.vercel.app/)*
 
 ---
 

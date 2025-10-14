@@ -7,7 +7,7 @@ Built using **HTML, CSS, and JavaScript**, this app lets you **add, store, and m
 ---
 
 ## 🌍 Live Demo
-👉 *[(https://pixel-study.vercel.app/)*
+👉 *https://pixel-study.vercel.app/*
 
 ---
 
@@ -67,7 +67,7 @@ git push
 Go to your forked repo → click “New Pull Request”
 Your PR will be reviewed and merged if it fits the project goals!
 
-##💡 Future Ideas
+## 💡 Future Ideas
 
 - 🌗 Add dark/light theme toggle
 

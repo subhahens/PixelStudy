@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Resource Hub</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <h1>📚 Study Resource Hub</h1>
+    <p>Your one-stop place for learning resources</p>
+  </div>
+  <div class="header-right">
+    <a href="http://"><img src=".//assets/GitHublogo.png" alt=""></a>
+    <div class="search-wrapper">
+      <input id="search" type="search" placeholder="Search resources..." />
+      <button id="clear-search" title="Clear search">✖</button>
+    </div>
+    <button id="theme-toggle" aria-pressed="false">🌙</button>
+  </div>
+</header>
+
+<nav id="tabs">
+  <!-- Tabs will be generated dynamically -->
+</nav>
+
+<main id="main-content">
+  <!-- Resource lists will be generated dynamically -->
+</main>
+
+<div id="add-resource-modal" class="modal">
+  <div class="modal-content">
+    <h3>Add New Resource</h3>
+    <label>Subject:</label>
+    <input type="text" id="new-subject" placeholder="e.g., Biology">
+    <label>Resource Name:</label>
+    <input type="text" id="new-name" placeholder="e.g., Khan Academy">
+    <label>Resource Link:</label>
+    <input type="url" id="new-link" placeholder="https://example.com">
+    <div class="modal-actions">
+      <button id="save-resource">Save</button>
+      <button id="close-modal">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<button id="add-resource-btn" title="Add Resource">➕ Add Resource</button>
+
+<footer>
+  <p>Made with ❤️ by PixelStudy</p>
+</footer>
+
+<script src="./js/index.js"></script>
+</body>
+</html>

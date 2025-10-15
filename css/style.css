@@ -43,7 +43,7 @@ body { min-height: 100vh; background: linear-gradient(180deg, var(--bg), #071028
 /* Header */
 header{display:flex;justify-content:space-between;align-items:center;gap:1rem}
 .brand{display:flex;align-items:center;gap:0.9rem}
-.logo img{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));box-shadow:var(--soft-shadow);color:white;font-weight:700;font-size:1.1rem}
+.logo img {width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));box-shadow:var(--soft-shadow);color:white;font-weight:700;font-size:1.1rem}
 h1{font-size:1.15rem;color:var(--muted);line-height:1}
 header p{font-size:0.85rem;color:var(--muted);opacity:0.9}
 

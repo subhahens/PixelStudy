@@ -224,18 +224,47 @@ document.getElementById('clear-search').addEventListener('click',()=>{ searchEl.
 
 // theme toggle
 const themeBtn = document.getElementById('theme-toggle');
-function setTheme(light){
-  document.body.className = light? 'light' : '';
-  themeBtn.setAttribute('aria-pressed', (!light).toString());
-  themeBtn.textContent = light? '🌙' : '☀️';
-  try{ localStorage.setItem('studyhub_theme_light', JSON.stringify(light)); }catch(e){}
+
+function setTheme(isLight) {
+  if (isLight) {
+    document.body.classList.add('light');
+  } else {
+    document.body.classList.remove('light');
+  }
+
+  // Update toggle button visuals and accessibility
+  themeBtn.setAttribute('aria-pressed', (!isLight).toString());
+  themeBtn.textContent = isLight ? '🌙' : '☀️';
+  themeBtn.title = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+
+  // Save preference
+  try {
+    localStorage.setItem('studyhub_theme_light', JSON.stringify(isLight));
+  } catch (e) {
+    console.warn('Could not save theme preference', e);
+  }
 }
-themeBtn.addEventListener('click',()=>{
-  const isLight = document.body.classList.contains('light');
-  setTheme(!isLight);
+
+// Toggle theme on button click
+themeBtn.addEventListener('click', () => {
+  const isCurrentlyLight = document.body.classList.contains('light');
+  setTheme(!isCurrentlyLight);
 });
-// restore theme
-try{ const lt = JSON.parse(localStorage.getItem('studyhub_theme_light')); if(lt===false) setTheme(false); else setTheme(true);}catch(e){ setTheme(true); }
+
+// Restore theme on load
+try {
+  const saved = localStorage.getItem('studyhub_theme_light');
+  if (saved !== null) {
+    const isLight = JSON.parse(saved);
+    setTheme(isLight);
+  } else {
+    // Default to light mode
+    setTheme(true);
+  }
+} catch (e) {
+  console.warn('Could not restore theme', e);
+  setTheme(true);
+}
 
 // keyboard: Escape closes modal
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if(modal.classList.contains('show')) closeModal(); else { currentSubject=null; renderAll(); } } });

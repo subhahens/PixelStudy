@@ -12,8 +12,8 @@
   color-scheme: dark;
 }
 
-/* Light theme variables (overridden) */
-:root.light{
+/* Light Theme Override */
+body.light {
   --bg: #f7f8fb;
   --card: #ffffff;
   --muted: #6b7280;
@@ -23,11 +23,22 @@
   --glass-2: rgba(0,0,0,0.03);
   --soft-shadow: 0 6px 18px rgba(99,102,241,0.07);
   color-scheme: light;
+  background: ghostwhite;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial}
-html,body{height:100%}
-body{min-height:100vh;background:linear-gradient(180deg,var(--bg),#071028);padding:1.2rem;display:flex;flex-direction:column;gap:1rem;color:var(--muted)}
+/* Smooth transitions for theme toggle */
+html, body, header, main, footer, .card, .tabs, .content {
+  transition:
+    background 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+/* === RESET & BASE === */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+html, body { height: 100%; }
+body { min-height: 100vh; background: linear-gradient(180deg, var(--bg), #071028); padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; color: var(--muted); }
 
 /* Header */
 header{display:flex;justify-content:space-between;align-items:center;gap:1rem}

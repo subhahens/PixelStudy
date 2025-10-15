@@ -88,3 +88,10 @@ This project is licensed under the MIT License — free to use, modify, and shar
 Made with love by Pixel Wing
 
 and awesome contributors from the open-source community 💫
+
+## 🧑‍💻 Contributors
+
+<a href="https://github.com/pixelwing/PixelStudy/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=pixelwing/PixelStudy" />
+</a>
+

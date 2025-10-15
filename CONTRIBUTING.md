@@ -1,20 +1,28 @@
-# 🤝 Contributing to Study Resource Hub
+# 🤝 Contributing to Pixel Study
 
 Hey there! 👋  
-Thanks for showing interest in contributing to **Study Resource Hub** — a simple, open-source web app built with HTML, CSS, and JavaScript to help students organize their study materials.
+Thanks for showing interest in contributing to **Pixel Study** — a simple, open-source web app built with HTML, CSS, and JavaScript to help students organize their study materials.
 
 We welcome **all kinds of contributions** — from fixing typos and improving documentation to adding new features or refining the UI.  
 Let’s make this project awesome together 💪
 
 ---
 
-## 🧭 Table of Contents
-1. [How to Contribute](#-how-to-contribute)
-2. [Development Setup](#-development-setup)
-3. [Contribution Guidelines](#-contribution-guidelines)
-4. [Pull Request Process](#-pull-request-process)
-5. [Community and Behavior](#-community-and-behavior)
-6. [Need Help?](#-need-help)
+## 💡 Contribution Ideas
+
+You can contribute by:
+
+- 🧠 Improving UI/UX or responsiveness
+
+- 🌙 Enhancing dark mode
+
+- 🧾 Adding new features (like subject search or category filters)
+
+- 🪶 Fixing typos or optimizing code
+
+- 🧰 Improving documentation (README, setup guide, etc.)
+
+If unsure, check the Issues tab for open ideas or discussions.
 
 ---
 
@@ -27,75 +35,91 @@ Click the **Fork** button (top-right corner of the repo) to create your own copy
 Use this command to clone your forked repository:
 ```bash
 git clone https://github.com/<your-username>/Study-Resource-Hub.git
-Replace <your-username> with your actual GitHub username.
+```
 
-3️⃣ Open the Project
+### 3️⃣ Open the Project
 Navigate to your cloned folder:
 
-bash
-Copy code
+```bash
+# Copy code
 cd Study-Resource-Hub
-Then open the project in your favorite code editor (like VS Code).
+# Then open the project in your favorite code editor (like VS Code).
+```
+### 4️⃣ Create a New Branch
 
-4️⃣ Make Your Changes
+Create a feature or fix branch to keep your changes organized:
+```bash
+git checkout -b feature/your-feature-name
+# Example: feature/add-dark-mode or fix/resource-delete-bug
+```
+
+### 🧠 Make Your Changes
 Edit the files you want to improve. You can modify:
 
 index.html → App structure
 
 style.css → Design and layout
 
-script.js → Functionality and logic
+index.js → Functionality and logic
 
-🧩 Contribution Guidelines
-Keep your changes clean and readable.
+### 🧩 Contribution Guidelines
+- Keep your changes clean and readable.
 
-Comment your code where necessary.
+- Comment your code where necessary.
 
-Follow consistent naming conventions and indentation.
+- Follow consistent naming conventions and indentation.
 
-Make sure your code doesn’t break existing features.
+- Make sure your code doesn’t break existing features.
 
-Create meaningful commit messages.
+- Create meaningful commit messages.
 
 Example: Added dark mode toggle feature
 
-🧠 Pull Request Process
-Commit your changes
+### Pull Request Process
+Commit your changes:
 
-bash
+```bash
 Copy code
 git add .
 git commit -m "Added new feature: <describe change>"
-Push to your fork
+```
+### 5️⃣ Push to your fork
 
-bash
-Copy code
-git push origin main
-Create a Pull Request (PR)
-Go to your forked repo on GitHub and click “New Pull Request”.
-Fill out the Pull Request Template properly.
-
-Wait for review
+```bash
+# Copy code
+git push origin feature/your-feature-name
+# Create a Pull Request (PR)
+# Go to your forked repo on GitHub and click “New Pull Request”.
+# Fill out the Pull Request Template properly.
+```
+** Wait for review **
 Maintainers will review your PR. If changes are needed, they’ll comment — please respond politely and make updates.
 
-Merge 🎉
+*Merge 🎉*
 Once approved, your PR will be merged and you’ll officially be an open-source contributor!
 
-💬 Community and Behavior
+## 💬 Community and Behavior
 We want this to be a friendly and respectful place for everyone.
 Please follow our Code of Conduct to ensure a welcoming environment.
 
-💡 Need Help?
+## 🧠 Code of Conduct
+
+Please be respectful and kind in all interactions.
+We aim to keep this community welcoming and beginner-friendly.
+Check out the CODE_OF_CONDUCT.md
+ for details.
+
+## 💡 Need Help?
 If you’re stuck or confused about anything:
 
-Open a discussion or issue in the repository.
+- Open a discussion or issue in the repository.
 
-Tag maintainers in your comments.
+- Tag maintainers in your comments.
 
-Be patient and polite — we’re all learning together. 😊
+- Be patient and polite — we’re all learning together. 😊
 
-⭐ Pro Tip
+## ⭐ Pro Tip
 If this is your first open-source contribution, don’t worry — everyone starts somewhere.
 Even fixing a small typo or improving documentation counts! 🙌
 
-Made with ❤️ by Subha Hens and open-source contributors.
+Made with ❤️ by pixel study and open-source contributors.

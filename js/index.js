@@ -1,205 +1,244 @@
+/* --- Data store (localStorage-backed) --- */
+const LS_KEY = 'studyhub_v2_resources';
 
-// --- INITIAL DATA ---
-const defaultResources = {
-  c: [
-    {name:"Learn C - Interactive", url:"https://www.learn-c.org/"},
-    {name:"C Language Full Course (YouTube)", url:"https://youtu.be/KJgsSFOSQv0"},
-    {name:"C Examples - Programiz", url:"https://www.programiz.com/c-programming/examples"}
+const sampleData = {
+  'Math': [
+    {name:'Khan Academy', url:'https://www.khanacademy.org', desc:'Free lessons & practice problems for many math topics'},
+    {name:'Desmos', url:'https://www.desmos.com', desc:'Graphing calculator and activities'}
   ],
+  'Computer Science': [
+    {name:'MDN Web Docs', url:'https://developer.mozilla.org', desc:'Documentation and guides for web dev'},
+    {name:'freeCodeCamp', url:'https://www.freecodecamp.org', desc:'Free interactive coding lessons'}
+  ],
+  'Biology': [
+    {name:'Crash Course', url:'https://www.youtube.com/user/crashcourse', desc:'Engaging video explanations'},
+  ]
 };
 
-// --- LOCAL STORAGE LOAD ---
-let resources = JSON.parse(localStorage.getItem('resources')) || defaultResources;
+function loadResources(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return structuredClone(sampleData);
+    return JSON.parse(raw);
+  }catch(e){
+    console.error('Load failed',e);
+    return structuredClone(sampleData);
+  }
+}
 
-// --- RENDER FUNCTIONS ---
-const tabsContainer = document.getElementById('tabs');
-const mainContent = document.getElementById('main-content');
+function saveResources(obj){
+  localStorage.setItem(LS_KEY, JSON.stringify(obj));
+}
 
-function renderTabs() {
-  tabsContainer.innerHTML = '';
-  for (let subject in resources) {
-    const tabWrapper = document.createElement('div');
-    tabWrapper.style.display = 'inline-flex';
-    tabWrapper.style.alignItems = 'center';
-    tabWrapper.style.gap = '0.3rem';
+/* --- App state --- */
+let resources = loadResources();
+let currentSubject = null; // null = all
 
-    const btn = document.createElement('button');
-    btn.className = 'tab-btn';
-    btn.dataset.topic = subject;
-    btn.textContent = subject.charAt(0).toUpperCase() + subject.slice(1);
-    tabWrapper.appendChild(btn);
+/* --- Helpers + rendering --- */
+const subjectsEl = document.getElementById('subjects');
+const gridEl = document.getElementById('resource-grid');
+const titleEl = document.getElementById('current-subject-title');
+const searchEl = document.getElementById('search');
 
-    // Delete subject button
-    const delSubBtn = document.createElement('button');
-    delSubBtn.textContent = '🗑';
-    delSubBtn.title = `Delete entire subject "${subject}"`;
-    delSubBtn.className = 'delete-subject-btn';
-    delSubBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // prevent tab switch
-      if (confirm(`Are you sure you want to delete the subject "${subject}" and all its resources?`)) {
-        delete resources[subject];
-        localStorage.setItem('resources', JSON.stringify(resources));
-        const remainingSubjects = Object.keys(resources);
-        renderTabs();
-        if (remainingSubjects.length > 0) {
-          renderResources(remainingSubjects[0]);
-        } else {
-          mainContent.innerHTML = '<p>No subjects available. Add a new one!</p>';
-        }
+function getSubjectList(){
+  return Object.keys(resources).sort((a,b)=>a.localeCompare(b));
+}
+
+function renderSubjects(){
+  subjectsEl.innerHTML='';
+  const keys = getSubjectList();
+  if(keys.length===0){
+    subjectsEl.innerHTML = '<p style="opacity:0.7">No subjects yet — add one to get started</p>'
+    return;
+  }
+  keys.forEach(s=>{
+    const el = document.createElement('div');
+    el.className = 'subject' + (currentSubject===s? ' active':'');
+    el.tabIndex = 0;
+    el.setAttribute('role','button');
+    el.innerHTML = `<div style="display:flex;gap:0.65rem;align-items:center"><div class="tag">${s[0]||'?'}</div><div class="meta">${s}</div></div><div class="count">${resources[s].length}</div>`;
+    el.addEventListener('click',()=>{ currentSubject = (currentSubject===s? null : s); renderAll(); });
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter') el.click(); });
+
+    // Add a small delete button
+    const del = document.createElement('button');
+    del.className = 'delete-subject-btn';
+    del.textContent = 'Delete';
+    del.title = 'Delete subject and all resources';
+    del.addEventListener('click', (ev)=>{
+      ev.stopPropagation();
+      if(confirm(`Delete subject "${s}" and all its resources?`)){
+        delete resources[s];
+        saveResources(resources);
+        if(currentSubject===s) currentSubject = null;
+        renderAll();
       }
     });
-    tabWrapper.appendChild(delSubBtn);
+    del.style.marginLeft='0.6rem';
+    el.appendChild(del);
 
-    tabsContainer.appendChild(tabWrapper);
-  }
+    subjectsEl.appendChild(el);
+  })
 }
 
-
-function renderResources(activeSubject = Object.keys(resources)[0]) {
-  mainContent.innerHTML = '';
-  for (let subject in resources) {
-    const section = document.createElement('section');
-    section.id = subject;
-    section.className = 'tab-content';
-    if (subject === activeSubject) section.classList.add('active');
-
-    const h2 = document.createElement('h2');
-    h2.textContent = subject.charAt(0).toUpperCase() + subject.slice(1);
-    section.appendChild(h2);
-
-    const ul = document.createElement('ul');
-    ul.className = 'resource-list';
-
-    resources[subject].forEach((res, index) => {
-      const li = document.createElement('li');
-
-      const a = document.createElement('a');
-      a.href = res.url;
-      a.target = "_blank";
-      a.rel = "noopener";
-      a.textContent = res.name;
-      li.appendChild(a);
-
-      const delBtn = document.createElement('button');
-      delBtn.textContent = '❌';
-      delBtn.title = 'Delete this resource';
-      delBtn.className = 'delete-btn';
-      delBtn.addEventListener('click', () => {
-        if(confirm(`Delete "${res.name}" from ${subject}?`)) {
-          resources[subject].splice(index, 1); // remove from array
-          localStorage.setItem('resources', JSON.stringify(resources));
-          renderResources(subject); // re-render
-        }
-      });
-      li.appendChild(delBtn);
-
-      ul.appendChild(li);
-    });
-
-    section.appendChild(ul);
-    mainContent.appendChild(section);
-  }
-
-  activateTabs();
+function createCard(subject, item, idx){
+  const c = document.createElement('article');
+  c.className='card';
+  c.innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:0.6rem;align-items:start">
+      <div>
+        <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.2rem">
+          <span class="tag">${subject}</span>
+          <a href="${item.url}" target="_blank" rel="noopener">${item.name}</a>
+        </div>
+        <p title="${item.desc||''}">${item.desc||'No description provided.'}</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end">
+        <button class="btn-ghost" data-subject="${subject}" data-idx="${idx}" aria-label="Edit resource">✎</button>
+        <button class="delete-btn" data-subject="${subject}" data-idx="${idx}" aria-label="Delete resource">🗑</button>
+      </div>
+    </div>
+  `;
+  return c;
 }
 
-
-// --- TAB SWITCHING ---
-function activateTabs() {
-  const buttons = document.querySelectorAll('.tab-btn');
-  const contents = document.querySelectorAll('.tab-content');
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      contents.forEach(c => c.classList.remove('active'));
-
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.topic).classList.add('active');
-
-      // clear search
-      document.getElementById('search').value = '';
-      filterResources('');
-    });
+function renderGrid(filterText=''){
+  gridEl.innerHTML='';
+  const filter = (filterText||'').toLowerCase().trim();
+  const pairs = [];
+  if(currentSubject){
+    (resources[currentSubject]||[]).forEach((r,i)=>pairs.push([currentSubject,r,i]));
+  }else{
+    Object.keys(resources).forEach(s=>resources[s].forEach((r,i)=>pairs.push([s,r,i])));
+  }
+  const filtered = pairs.filter(([s,r])=>{
+    if(!filter) return true;
+    return s.toLowerCase().includes(filter) || r.name.toLowerCase().includes(filter) || (r.desc||'').toLowerCase().includes(filter) || (r.url||'').toLowerCase().includes(filter);
   });
 
-  buttons[0].classList.add('active');
-}
+  if(filtered.length===0){
+    gridEl.innerHTML = `<p style="opacity:0.8">No results. Try a different search or add a new resource.</p>`;
+    return;
+  }
 
-// --- SEARCH ---
-const searchInput = document.getElementById('search');
-const clearBtn = document.getElementById('clear-search');
-
-function filterResources(query) {
-  const activeSection = document.querySelector('.tab-content.active');
-  if (!activeSection) return;
-  const items = activeSection.querySelectorAll('li');
-  const q = query.trim().toLowerCase();
-
-  items.forEach(li => {
-    const text = li.innerText.toLowerCase();
-    if (!q || text.includes(q)) li.style.display = '';
-    else li.style.display = 'none';
+  filtered.forEach(([s,r,i])=>{
+    gridEl.appendChild(createCard(s,r,i));
   });
+
+  /* attach actions */
+  gridEl.querySelectorAll('.delete-btn').forEach(btn=>btn.addEventListener('click',(e)=>{
+    const s = e.currentTarget.dataset.subject; const idx = Number(e.currentTarget.dataset.idx);
+    if(confirm('Delete this resource?')){
+      resources[s].splice(idx,1);
+      if(resources[s].length===0) delete resources[s];
+      saveResources(resources);
+      renderAll();
+    }
+  }));
+
+  gridEl.querySelectorAll('.btn-ghost').forEach(btn=>btn.addEventListener('click',(e)=>{
+    const s = e.currentTarget.dataset.subject; const idx = Number(e.currentTarget.dataset.idx);
+    // populate modal for edit
+    document.getElementById('modal-subject').value = s;
+    document.getElementById('modal-name').value = resources[s][idx].name;
+    document.getElementById('modal-link').value = resources[s][idx].url;
+    openModal(()=>{
+      // on save: replace
+      const ns = document.getElementById('modal-subject').value.trim();
+      const nn = document.getElementById('modal-name').value.trim();
+      const nu = document.getElementById('modal-link').value.trim();
+      if(!ns || !nn || !nu) { alert('Please provide subject, name and link.'); return false; }
+      // remove old
+      resources[s].splice(idx,1);
+      if(resources[s].length===0) delete resources[s];
+      // add to new subject
+      resources[ns] = resources[ns]||[];
+      resources[ns].push({name:nn,url:nu,desc:resources[s] && resources[s][idx] ? resources[s][idx].desc : ''});
+      saveResources(resources);
+      renderAll();
+      return true;
+    });
+  }));
 }
 
-searchInput.addEventListener('input', e => filterResources(e.target.value));
-clearBtn.addEventListener('click', () => {
-  searchInput.value = '';
-  filterResources('');
-});
-
-// --- DARK MODE ---
-const themeToggle = document.getElementById('theme-toggle');
-const DARK_KEY = 'studyhub-dark-mode';
-
-function applyTheme(isDark) {
-  document.documentElement.classList.toggle('dark', isDark);
-  themeToggle.textContent = isDark ? '☀️' : '🌙';
+function renderAll(){
+  renderSubjects();
+  titleEl.textContent = currentSubject? currentSubject : 'All Resources';
+  renderGrid(searchEl.value);
 }
 
-const storedTheme = localStorage.getItem(DARK_KEY);
-applyTheme(storedTheme === 'true');
+/* --- Modal utilities --- */
+const modal = document.getElementById('modal');
+let modalCallback = null;
+function openModal(onSave){
+  modalCallback = onSave || onSaveDefault;
+  modal.classList.add('show');
+  document.getElementById('modal-subject').focus();
+}
+function closeModal(){
+  modal.classList.remove('show');
+  modalCallback = null;
+  // clear fields
+  document.getElementById('modal-subject').value='';
+  document.getElementById('modal-name').value='';
+  document.getElementById('modal-link').value='';
+}
+function onSaveDefault(){
+  const ns = document.getElementById('modal-subject').value.trim();
+  const nn = document.getElementById('modal-name').value.trim();
+  const nu = document.getElementById('modal-link').value.trim();
+  if(!ns || !nn || !nu){ alert('Please provide subject, name and link.'); return false; }
+  resources[ns] = resources[ns]||[];
+  resources[ns].push({name:nn,url:nu,desc:''});
+  saveResources(resources);
+  renderAll();
+  return true;
+}
 
-themeToggle.addEventListener('click', () => {
-  const isDarkNow = document.documentElement.classList.toggle('dark');
-  localStorage.setItem(DARK_KEY, isDarkNow ? 'true' : 'false');
-  applyTheme(isDarkNow);
+document.getElementById('modal-cancel').addEventListener('click',()=>closeModal());
+document.getElementById('modal-save').addEventListener('click',()=>{
+  if(!modalCallback) return closeModal();
+  const ok = modalCallback();
+  if(ok) closeModal();
 });
 
-// --- ADD RESOURCE ---
-const addBtn = document.getElementById('add-resource-btn');
-const modal = document.getElementById('add-resource-modal');
-const closeModalBtn = document.getElementById('close-modal');
-const saveBtn = document.getElementById('save-resource');
+// open add resource
+document.getElementById('open-add').addEventListener('click',()=>openModal());
 
-addBtn.addEventListener('click', () => modal.style.display = 'flex');
-closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
-
-saveBtn.addEventListener('click', () => {
-  const subject = document.getElementById('new-subject').value.trim().toLowerCase();
-  const name = document.getElementById('new-name').value.trim();
-  const url = document.getElementById('new-link').value.trim();
-
-  if (!subject || !name || !url) return alert('Please fill all fields!');
-
-  if (!resources[subject]) resources[subject] = [];
-  resources[subject].push({name, url});
-  localStorage.setItem('resources', JSON.stringify(resources));
-
-  renderTabs();
-  renderResources(subject);
-
-  document.getElementById('new-subject').value = '';
-  document.getElementById('new-name').value = '';
-  document.getElementById('new-link').value = '';
-  modal.style.display = 'none';
+// add subject
+document.getElementById('add-subject-btn').addEventListener('click',()=>{
+  const v = document.getElementById('new-subject-name').value.trim();
+  if(!v) return; resources[v] = resources[v]||[]; saveResources(resources); document.getElementById('new-subject-name').value=''; renderAll();
 });
 
-window.addEventListener('click', e => {
-  if (e.target === modal) modal.style.display = 'none';
+// reset sample
+document.getElementById('reset-sample').addEventListener('click',()=>{
+  if(confirm('Reset to sample data? This will overwrite your saved resources.')){
+    resources = structuredClone(sampleData); saveResources(resources); currentSubject = null; renderAll();
+  }
 });
 
-// --- INITIAL RENDER ---
-renderTabs();
-renderResources();
+// search
+searchEl.addEventListener('input',()=>renderGrid(searchEl.value));
+document.getElementById('clear-search').addEventListener('click',()=>{ searchEl.value=''; renderGrid(''); searchEl.focus(); });
+
+// theme toggle
+const themeBtn = document.getElementById('theme-toggle');
+function setTheme(light){
+  document.body.className = light? 'light' : '';
+  themeBtn.setAttribute('aria-pressed', (!light).toString());
+  themeBtn.textContent = light? '🌙' : '☀️';
+  try{ localStorage.setItem('studyhub_theme_light', JSON.stringify(light)); }catch(e){}
+}
+themeBtn.addEventListener('click',()=>{
+  const isLight = document.body.classList.contains('light');
+  setTheme(!isLight);
+});
+// restore theme
+try{ const lt = JSON.parse(localStorage.getItem('studyhub_theme_light')); if(lt===false) setTheme(false); else setTheme(true);}catch(e){ setTheme(true); }
+
+// keyboard: Escape closes modal
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if(modal.classList.contains('show')) closeModal(); else { currentSubject=null; renderAll(); } } });
+
+// initial render
+renderAll();

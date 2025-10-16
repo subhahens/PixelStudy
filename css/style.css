@@ -41,7 +41,7 @@ html, body { height: 100%; }
 body { min-height: 100vh; background: linear-gradient(180deg, var(--bg), #071028); padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; color: var(--muted); }
 
 /* Header */
-header{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+header{display:flex;flex-direction: row ;justify-content:space-between;align-items:center;gap:1rem}
 .brand{display:flex;align-items:center;gap:0.9rem}
 .logo img {width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));box-shadow:var(--soft-shadow);color:white;font-weight:700;font-size:1.1rem}
 h1{font-size:1.15rem;color:var(--muted);line-height:1}
@@ -77,7 +77,7 @@ main{display:grid;grid-template-columns:260px 1fr;gap:1rem;align-items:start}
 .content-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:0.8rem}
 .content-header h3{margin:0;color:var(--muted)}
 .resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.9rem}
-.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:0.9rem;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:0.6rem}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:0.9rem;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:0.6rem;border: 1px solid rgba(125, 92, 255, 0.211);}
 .card a{font-weight:600;color:var(--accent-2);text-decoration:none}
 .card p{font-size:0.85rem;color:var(--muted)}
 .tag{display:inline-block;font-size:0.75rem;padding:0.22rem 0.45rem;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:600}
@@ -96,12 +96,14 @@ footer{display:flex;justify-content:center;padding:0.6rem;border-radius:10px;col
 .form-row input,textarea{flex:1;padding:0.6rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit}
 .form-row label {font-size: 14px;}
 
-/* Responsive */
+/* Responsive Mobile*/
 @media (max-width:900px){
   main{grid-template-columns:1fr;}
   .resource-grid{grid-template-columns:1fr}
   .logo{width:48px;height:48px}
   .search{min-width:120px}
+  /* Header */
+  header{flex-direction: column;}
 }
 
 /* Tiny accessibility + motion */
@@ -127,7 +129,13 @@ a:focus,button:focus,input:focus{outline:2px solid rgba(124,92,255,0.18);outline
 .card:focus-within {
   transform: translateX(4px);
   /* subtle lift shadow to match the subjects' hover feel */
-  box-shadow: 0 10px 24px rgba(2,6,23,0.45);
+  /* https://smoothshadows.com/#djEsMiw1LDAuMDgsMjQsMzIsMCwjMDMwNzEyLCNmM2Y0ZjYsI2ZmZmZmZiwy */
+box-shadow: 0px 1px 1px rgba(3, 7, 18, 0.08),
+  0px 5px 4px rgba(3, 7, 18, 0.06),
+  0px 12px 9px rgba(3, 7, 18, 0.05),
+  0px 20px 15px rgba(3, 7, 18, 0.03),
+  0px 32px 24px rgba(3, 7, 18, 0.02);
+
   /* keep smooth motion (already defined globally, but safe to reinforce) */
   transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms cubic-bezier(.2,.9,.2,1);
 }

@@ -91,9 +91,10 @@ footer{display:flex;justify-content:center;padding:0.6rem;border-radius:10px;col
 .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:60}
 .modal.show{display:flex}
 .modal-card{width:100%;max-width:520px;background:var(--card);padding:1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-.modal-card h4{margin-bottom:0.6rem;color:var(--muted)}
-.form-row{display:flex;gap:0.6rem}
+.modal-card h4{margin-bottom:0.6rem;color:var(--muted);font-size: 20px;font-weight: 600;}
+.form-row{display:flex;flex-direction: column;gap:0.6rem}
 .form-row input,textarea{flex:1;padding:0.6rem;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit}
+.form-row label {font-size: 14px;}
 
 /* Responsive */
 @media (max-width:900px){

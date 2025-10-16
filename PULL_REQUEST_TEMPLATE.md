@@ -18,7 +18,7 @@ Please delete options that are not relevant and mark the one(s) that apply.
 - [ ] 🐛 Bug fix
 - [ ] 🧹 Code cleanup / refactoring
 - [ ] 📝 Documentation update
-- [✅] 🎨 UI/UX improvement
+- [ ] 🎨 UI/UX improvement
 - [ ] ⚙️ Other (specify below)
 
 ---
